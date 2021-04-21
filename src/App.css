@@ -24,5 +24,13 @@ body { margin: 0; }
 .empty-position:hover { background-color: white !important; }
 .X-position { color: #2196f3 !important; }
 .O-position { color: #ff9100 !important; }
+.X-position, .O-position { animation: grow .25s; }
 
-.human-position { transition: all .2s ease-in-out; }
+@keyframes grow {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}

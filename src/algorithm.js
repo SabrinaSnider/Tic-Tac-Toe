@@ -8,7 +8,6 @@
  * Board must be square
  */
 
-const BOARD_HEIGHT = 3;
 const MINMAX_DEPTH = 3;
 
 function move(board, HUMAN_PIECE, COMPUTER_PIECE) {
@@ -47,8 +46,8 @@ function minmax(depth, player, board, HUMAN_PIECE, COMPUTER_PIECE) {
 
 function potentialMoves(board) {
   let moves = [];
-  for (let row = 0; row < BOARD_HEIGHT; row++) {
-    for (let col = 0; col < BOARD_HEIGHT; col++) {
+  for (let row = 0; row < board.length; row++) {
+    for (let col = 0; col < board[0].length; col++) {
       if (!board[row][col]) moves.push([row, col])
     }
   }
@@ -57,28 +56,29 @@ function potentialMoves(board) {
 
 function evaluate(board, HUMAN_PIECE, COMPUTER_PIECE) {
   let score = 0;
+  let positions;
 
-  // Vertical
-  for (let col = 0; col < BOARD_HEIGHT; col++) {
+  // Horizontal
+  for (let col = 0; col < board.length; col++) {
     positions = [];
-    for (let row = 0; row < BOARD_HEIGHT; row++) positions.push([row, col]);
+    for (let row = 0; row < board[0].length; row++) positions.push([row, col]);
     score += evaluateLine(positions, board, HUMAN_PIECE, COMPUTER_PIECE);
   }
 
-  // Horizontal
-  for (let row = 0; row < BOARD_HEIGHT; row++) {
+  // Vertical
+  for (let row = 0; row < board[0].length; row++) {
     positions = [];
-    for (let col = 0; col < BOARD_HEIGHT; col++) positions.push([row, col]);
+    for (let col = 0; col < board.length; col++) positions.push([row, col]);
     score += evaluateLine(positions, board, HUMAN_PIECE, COMPUTER_PIECE);
   }
 
   // Diagonal
   positions = [];
-  for (let pos = 0; pos < BOARD_HEIGHT; pos++) positions.push([pos, pos]);
+  for (let pos = 0; pos < board.length; pos++) positions.push([pos, pos]);
   score += evaluateLine(positions, board, HUMAN_PIECE, COMPUTER_PIECE);
   
   positions = [];
-  for (let pos = 0; pos < BOARD_HEIGHT; pos++) positions.push([pos, BOARD_HEIGHT - pos]);
+  for (let pos = 0; pos < board.length; pos++) positions.push([pos, board.length - pos]);
   score += evaluateLine(positions, board, HUMAN_PIECE, COMPUTER_PIECE);
 
   return score;
@@ -92,16 +92,17 @@ function evaluateLine(positions, board, HUMAN_PIECE, COMPUTER_PIECE) {
     if (player === COMPUTER_PIECE) computerCount++; else if (player === HUMAN_PIECE) humanCount++;
   });
   
-  if (humanCount == 0) return 1 ** computerCount;
-  else if (computerCount == 0) return -1 * (1 ** humanCount);
+  if (humanCount === 0) return 1 ** computerCount;
+  else if (computerCount === 0) return -1 * (1 ** humanCount);
   else return 0;
 }
 
+export default move;
 
-let board = Array.from(Array(3), () => Array(3).fill(undefined));
-console.log(board);
-board = move(board, "X", "O")
-console.log(board);
+// let board = Array.from(Array(3), () => Array(3).fill(undefined));
+// console.log(board);
+// board = move(board, "X", "O")
+// console.log(board);
 // board[0][1] = "HUMAN";
 // console.log(board);
 // board = move(board)
