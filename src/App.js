@@ -8,12 +8,22 @@ function App() {
   const HUMAN_PIECE = "X";
   const COMPUTER_PIECE = "O";
 
-  const [boardHeight, setBoardHeight] = useState(3);
+  const [boardSize, setBoardSize] = useState(3);
   const [turn, setTurn] = useState(HUMAN_PIECE);
   const [gameEnd, setGameEnd] = useState(false);
   const [board, setBoard] = useState(
-    Array.from(Array(boardHeight), () => Array(boardHeight).fill(undefined))
+    Array.from(Array(boardSize), () => Array(boardSize).fill(undefined))
   );
+
+  useEffect(() => {
+    const gridBackgroundRows = document.getElementById("grid-background-rows");
+    gridBackgroundRows.style.height = 5 * boardSize + "rem";
+    gridBackgroundRows.style.width = 5 * boardSize + "rem";
+
+    const gridBackgroundCols = document.getElementById("grid-background-cols");
+    gridBackgroundCols.style.height = 5 * boardSize + "rem";
+    gridBackgroundCols.style.width = 5 * boardSize + "rem";
+  });
 
   useEffect(() => {
     if (gameEnd) {
@@ -22,7 +32,7 @@ function App() {
     } else if (turn === COMPUTER_PIECE) {
       computerMove();
     }
-  }, [turn]);
+  }, [turn, gameEnd]);
 
   function getPositionClass(element) {
     if (element === "X") return "X-position";
@@ -31,12 +41,13 @@ function App() {
   }
 
   function humanMove(row, column) {
+    setTurn(undefined);
     let boardCopy = board.slice();
     boardCopy[row][column] = HUMAN_PIECE;
     setBoard(boardCopy);
     
     checkIfEnd();
-    if (!gameEnd) setTimeout(() => setTurn(COMPUTER_PIECE), 500);
+    if (!gameEnd) setTimeout(() => setTurn(COMPUTER_PIECE), 1000);
   }
 
   function computerMove() {
@@ -45,7 +56,7 @@ function App() {
     setBoard(boardCopy);
 
     checkIfEnd();
-    if (!gameEnd) setTimeout(() => setTurn(HUMAN_PIECE), 500);
+    if (!gameEnd) setTimeout(() => setTurn(HUMAN_PIECE), 1000);
   }
 
   function checkIfEnd() {
@@ -114,7 +125,23 @@ function App() {
 
       </div>
       <div id="game-container">
-        <Grid container direction="column">
+        <div id="grid-background-rows">
+          {board.map((row, rowNumber) => {
+            let rowClass = "background-row";
+            if (rowNumber === 0) rowClass += " start-row";
+            return <div class={rowClass}></div>
+          })}
+        </div>
+
+        <div id="grid-background-cols">
+          {board.map((col, colNumber) => {
+            let colClass = "background-col";
+            if (colNumber === 0) colClass += " start-col";
+            return <div class={colClass}></div>
+          })}
+        </div>
+        
+        <Grid container direction="column" id="grid">
           {board.map((row, rowNumber) =>
             <Grid item key={rowNumber}>
               {row.map((element, colNumber) => 
