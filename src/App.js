@@ -1,8 +1,11 @@
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import './App.css';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import { useState, useEffect } from 'react';
 import Computer from './Minmax';
+import './App.css';
 
 function App() {
   const HUMAN_PIECE = "X";
@@ -10,7 +13,8 @@ function App() {
   const computerPlayer = new Computer(HUMAN_PIECE, COMPUTER_PIECE);
 
   const [boardSize, setBoardSize] = useState(3);
-  const [turn, setTurn] = useState(HUMAN_PIECE);
+  const [startTurn, setStartTurn] = useState(HUMAN_PIECE);
+  const [turn, setTurn] = useState(startTurn);
   const [gameEnd, setGameEnd] = useState(false);
   const [board, setBoard] = useState(
     Array.from(Array(boardSize), () => Array(boardSize).fill(undefined))
@@ -24,7 +28,8 @@ function App() {
     const gridBackgroundCols = document.getElementById("grid-background-cols");
     gridBackgroundCols.style.height = 5 * boardSize + "rem";
     gridBackgroundCols.style.width = 5 * boardSize + "rem";
-  });
+    resetGame();
+  }, [startTurn, boardSize]);
 
   useEffect(() => {
     if (gameEnd) {
@@ -34,6 +39,12 @@ function App() {
       computerMove();
     }
   }, [turn, gameEnd]);
+
+  function resetGame() {
+    setTurn(startTurn);
+    setGameEnd(false);
+    setBoard(Array.from(Array(boardSize), () => Array(boardSize).fill(undefined)));
+  }
 
   function getPositionClass(element) {
     if (element === "X") return "X-position";
@@ -120,7 +131,16 @@ function App() {
   return (
     <div id="app">
       <div id="header">
-
+        <FormControl>
+          <Select
+            id="turn-select"
+            value={startTurn}
+            onChange={event => setStartTurn(event.target.value)}
+          >
+            <MenuItem value={HUMAN_PIECE}>Human goes first</MenuItem>
+            <MenuItem value={COMPUTER_PIECE}>Computer goes first</MenuItem>
+          </Select>
+        </FormControl>
       </div>
       <div id="game-container">
         <div id="grid-background-rows">

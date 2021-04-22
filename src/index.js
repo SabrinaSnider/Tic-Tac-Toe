@@ -1,10 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import { unstable_createMuiStrictModeTheme, ThemeProvider } from '@material-ui/core/styles';
+
+const darkTheme = unstable_createMuiStrictModeTheme ({
+  palette: {
+    type: 'dark',
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={darkTheme}>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
