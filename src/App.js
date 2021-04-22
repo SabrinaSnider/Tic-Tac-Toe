@@ -2,6 +2,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import { useState, useEffect } from 'react';
 import Computer from './Minmax';
@@ -131,16 +132,33 @@ function App() {
   return (
     <div id="app">
       <div id="header">
-        <FormControl>
-          <Select
-            id="turn-select"
-            value={startTurn}
-            onChange={event => setStartTurn(event.target.value)}
-          >
-            <MenuItem value={HUMAN_PIECE}>Human goes first</MenuItem>
-            <MenuItem value={COMPUTER_PIECE}>Computer goes first</MenuItem>
-          </Select>
-        </FormControl>
+        <div className="game-setting">
+          <InputLabel htmlFor="turn-select">Who starts</InputLabel>
+          <FormControl>
+            <Select
+              id="turn-select"
+              value={startTurn}
+              onChange={event => setStartTurn(event.target.value)}
+            >
+              <MenuItem value={HUMAN_PIECE}>Human</MenuItem>
+              <MenuItem value={COMPUTER_PIECE}>Computer</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+        <div className="game-setting">
+          <InputLabel htmlFor="size-select">Board size</InputLabel>
+          <FormControl>
+            <Select
+                id="size-select"
+                value={boardSize}
+                onChange={event => setBoardSize(event.target.value)}
+              >
+                <MenuItem value={3}>3x3</MenuItem>
+                <MenuItem value={4}>4x4</MenuItem>
+                <MenuItem value={5}>5x5</MenuItem>
+              </Select>
+          </FormControl>
+        </div>
       </div>
       <div id="game-container">
         <div id="grid-background-rows">

@@ -7,6 +7,9 @@ const darkTheme = unstable_createMuiStrictModeTheme ({
   palette: {
     type: 'dark',
   },
+  typography: {
+    fontSize: 16,
+  },
 });
 
 ReactDOM.render(
