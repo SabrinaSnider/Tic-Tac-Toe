@@ -8,13 +8,10 @@ class Computer {
 
   move(board) {
     if (this.potentialMoves(board).length === 0) return board; // already finished
-
     let boardCopy = board.slice();
     const bestScore = this.minmax(boardCopy);
     const bestMove = this.move_scores.get(bestScore)[0];
     boardCopy[bestMove[0]][bestMove[1]] = this.COMPUTER_PIECE;
-
-    console.log(this.move_scores, "best move is", bestMove);
     return boardCopy;
   }
 

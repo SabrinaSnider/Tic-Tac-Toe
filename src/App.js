@@ -17,6 +17,7 @@ function App() {
   const [startTurn, setStartTurn] = useState(HUMAN_PIECE);
   const [turn, setTurn] = useState(startTurn);
   const [gameEnd, setGameEnd] = useState(false);
+  const [gameMessage, setGameMessage] = useState("");
   const [board, setBoard] = useState(
     Array.from(Array(boardSize), () => Array(boardSize).fill(undefined))
   );
@@ -70,7 +71,20 @@ function App() {
   }
 
   function checkIfEnd() {
-    if (checkHorizontalWin() || checkVerticalWin() || checkDiagonalWin()) setGameEnd(true);
+    checkHorizontalWin();
+    checkVerticalWin();
+    checkDiagonalWin();
+    checkBoardFull();
+  }
+
+  function endingGame(player) {
+    if (player === HUMAN_PIECE) {
+
+    } else if (player === COMPUTER_PIECE) {
+
+    } else {
+
+    }
   }
 
   function checkHorizontalWin() {
@@ -83,9 +97,11 @@ function App() {
         if (board[row][col] !== player) win = false;
       }
       
-      if (win) return true;
+      if (win) {
+        setGameEnd(true);
+        endingGame(player);
+      }
     }
-    return false;
   }
 
   function checkVerticalWin() {
@@ -98,9 +114,11 @@ function App() {
         if (board[row][col] !== player) win = false;
       }
 
-      if (win) return true;
+      if (win) {
+        setGameEnd(true);
+        endingGame(player);
+      }
     }
-    return false;
   }
 
   function checkDiagonalWin() {
@@ -114,7 +132,10 @@ function App() {
     } else {
       win = false;
     }
-    if (win) return true;
+    if (win) {
+      setGameEnd(true);
+      endingGame(player);
+    }
 
     // Diagonal starting from top right
     win = true;
@@ -126,11 +147,27 @@ function App() {
     } else {
       win = false;
     }
-    return win;
+    if (win) {
+      setGameEnd(true);
+      endingGame(player);
+    }
+  }
+
+  function checkBoardFull() {
+    for (let col = 0; col < board.length; col++) {
+      for (let row = 0; row < board[0].length; row++) {
+        if (!board[row][col]) return; // empty space
+      }
+    }
+    setGameEnd(true);
+    endingGame();
   }
 
   return (
     <div id="app">
+      <div id="game-message">
+
+      </div>
       <div id="header">
         <div className="game-setting">
           <InputLabel htmlFor="turn-select">Who starts</InputLabel>
