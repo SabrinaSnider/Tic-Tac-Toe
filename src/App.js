@@ -2,11 +2,12 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import './App.css';
 import { useState, useEffect } from 'react';
-import move from './algorithm';
+import Computer from './Minmax';
 
 function App() {
   const HUMAN_PIECE = "X";
   const COMPUTER_PIECE = "O";
+  const computerPlayer = new Computer(HUMAN_PIECE, COMPUTER_PIECE);
 
   const [boardSize, setBoardSize] = useState(3);
   const [turn, setTurn] = useState(HUMAN_PIECE);
@@ -51,10 +52,7 @@ function App() {
   }
 
   function computerMove() {
-    let boardCopy = board.slice();
-    boardCopy = move(boardCopy, HUMAN_PIECE, COMPUTER_PIECE)
-    setBoard(boardCopy);
-
+    setBoard(computerPlayer.move(board));
     checkIfEnd();
     if (!gameEnd) setTimeout(() => setTurn(HUMAN_PIECE), 1000);
   }
@@ -129,7 +127,7 @@ function App() {
           {board.map((row, rowNumber) => {
             let rowClass = "background-row";
             if (rowNumber === 0) rowClass += " start-row";
-            return <div class={rowClass}></div>
+            return <div className={rowClass} key={rowNumber}></div>
           })}
         </div>
 
@@ -137,7 +135,7 @@ function App() {
           {board.map((col, colNumber) => {
             let colClass = "background-col";
             if (colNumber === 0) colClass += " start-col";
-            return <div class={colClass}></div>
+            return <div className={colClass} key={colNumber}></div>
           })}
         </div>
         
